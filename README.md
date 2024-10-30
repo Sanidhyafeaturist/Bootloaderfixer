@@ -1,59 +1,76 @@
-# Bootloader Fixer
+# 🛠️ ESP8266 Bootloader Fixer
 
-Broken a Bootloader and need a fix within arduino uno? well you are in the right place!
-This bootloader fixer fixes your bootloader within arduino uno.
+## Overview
 
-## ⚠️ Caution
+This project implements a **bootloader fixer** for the NodeMCU (ESP8266) that allows for seamless recovery from firmware failures. If the current firmware is invalid, the device can load a backup firmware stored in the SPIFFS filesystem.
 
-**Caution:** 
+## Features
 
-- Using this project if your data loses then I AM NOT RESPONSIBLE!
-- If you want to avoid risk then simply us a vm machine like virtualbox. Note - This is for test purposes only.
-- You need an arduino uno and a supporting usb cable and ensure latest version of windows is installed.
+- 🌐 **Wi-Fi Connectivity**: Connects to your Wi-Fi network for remote management.
+- 🔄 **Firmware Validity Check**: Verifies if the current firmware is valid before proceeding.
+- 💾 **Backup Firmware Loading**: Loads a backup firmware from SPIFFS if the current firmware is invalid.
+- 📡 **Over-the-Air (OTA) Updates**: Supports OTA firmware updates for easy deployment.
 
-## 📜 Disclaimer
+## Requirements
 
-**Disclaimer:**
+### Hardware
 
-- It is for test purposes only. If you try to be oversmart and destroy your bootloader then you are responsible.
+- NodeMCU (ESP8266) development board
 
+### Software
 
-## 🚀 Getting Started
+- Arduino IDE with the ESP8266 board package installed
+- Libraries: `ESP8266WiFi`, `FS`, `SPIFFS`, `ArduinoOTA`
 
+## Setup Instructions
 
-- Locate Hex File:
-After the compilation process is complete, navigate to the temporary directory where Arduino stores the compiled hex files. The location can vary depending on your operating system:
+1. **Install Arduino IDE**:
+   - Download and install the [Arduino IDE](https://www.arduino.cc/en/software).
 
-On Windows: C:\Users\<YourUsername>\AppData\Local\Temp\build<SomeRandomNumber>\
-On macOS: /var/folders/<SomeRandomCharacters>/T/arduino_build_<SomeRandomNumber>/
-On Linux: /tmp/arduino_build_<SomeRandomNumber>/
-Inside the above directory, you'll find a .hex file with a name matching your sketch.
+2. **Install ESP8266 Board Package**:
+   - Open the Arduino IDE.
+   - Go to `File` > `Preferences`.
+   - In the "Additional Board Manager URLs" field, add:
+     ```
+     http://arduino.esp8266.com/stable/package_esp8266com_index.json
+     ```
+   - Go to `Tools` > `Board` > `Board Manager`, search for "ESP8266", and install the package.
 
-Open Arduino ISP Example:
-In the Arduino IDE, go to File > Examples > 11.ArduinoISP > ArduinoISP and open the example sketch.
+3. **Clone or Download the Repository**:
+   - Clone this repository or download it as a ZIP file and extract it.
 
-Select Board and Port:
-In the Arduino IDE, go to Tools > Board and select the appropriate board (Arduino Uno) and processor.
+4. **Open the Code**:
+   - Open the provided `.ino` file in the Arduino IDE.
 
-Burn Bootloader (Optional):
-If you're uploading to a blank or new ATmega328P microcontroller, you might need to burn the bootloader first. This can be done using the Arduino IDE. Go to Tools > Burn Bootloader.
+5. **Configure Wi-Fi Credentials**:
+   - In the code, replace `your_SSID` and `your_PASSWORD` with your actual Wi-Fi credentials.
 
-Upload Using Programmer:
-In the ArduinoISP example sketch, click the right-arrow icon (Upload Using Programmer) to upload the sketch to the Arduino Uno. This sketch essentially turns your Uno into a programmer.
+6. **Upload the Code**:
+   - Connect your NodeMCU to your computer.
+   - Select the appropriate board and port in the Arduino IDE (`Tools` > `Board` > `NodeMCU 1.0 (ESP-12E Module)` and `Tools` > `Port`).
+   - Click the upload button to upload the initial firmware.
 
-Upload Hex File:
-Now that your Arduino Uno is acting as a programmer, go to Sketch > Upload Using Programmer in the original sketch you opened. This will upload the hex file you generated earlier to the target microcontroller.
+7. **Upload Backup Firmware**:
+   - Ensure you upload a valid firmware file named `backup.bin` to the SPIFFS filesystem using a separate sketch.
 
-Verify Upload:
-The Arduino IDE will show you the progress and status of the upload process. Once complete, you should see a success message.
+## Usage
 
-That's it! Your hex file should now be uploaded to your Arduino Uno. Remember that the steps might vary slightly based on the version of the Arduino IDE you're using and any specific configurations you have.
+- Open the Serial Monitor to observe the connection status to your Wi-Fi network.
+- The device will check the firmware validity on startup and load the backup if necessary.
+- Use the Arduino IDE for OTA updates by selecting "Upload" while connected to the same network.
 
+## Important Notes
 
-## 📝 License
+- 🗂️ Make sure the backup firmware is valid and thoroughly tested.
+- 🔄 Modify the `isFirmwareValid()` function to fit your application's specific needs.
+- ⚠️ Always have a backup plan when testing recovery mechanisms to avoid bricking your device.
 
-This project is licensed under the Apache Licence.
+## Future Enhancements
 
----
+- 🚀 **Web Interface**: Develop a web interface for easier firmware management.
+- 🔍 **Version Management**: Implement version checks to ensure compatibility of uploaded firmware.
+- 🔒 **Enhanced Error Handling**: Add more robust error handling for increased reliability.
 
+## License
 
+This project is licensed under the MIT License. Feel free to modify and use the code for your own projects! 🎉
